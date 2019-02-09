@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>zflaw</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-06-21"><meta name="DC.source" content="zflaw.m"><style type="text/css">
+      --><title>zflaw</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-09"><meta name="DC.source" content="zflaw.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,13 +67,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% assume population distribution is standard normal.</span>
-<span class="comment">% repeatedly draw samples (a 1000 times) of size N = 2:50</span>
+<span class="comment">% repeatedly draw samples (REP times) of size N = 2:50</span>
 
 clear; close <span class="string">all</span>;
 
-REP = 10000; <span class="comment">% number of repeatition</span>
+REP = 10000; <span class="comment">% number of repititions</span>
 
 figure;
+
+<span class="comment">% N: Number of samples</span>
 
 <span class="comment">% z-confidence interval</span>
 count = zeros(1, 50);
@@ -99,7 +101,7 @@ plot(count(2:end), <span class="string">'LineWidth'</span>, 2); hold <span class
 <span class="comment">% t-confidence interval</span>
 count = zeros(1, 50);
 <span class="keyword">for</span> N = 2:50
-    t = tinv(0.975, N-1); <span class="comment">% t-score account for degrees of freedom</span>
+    t = tinv(0.975, N-1); <span class="comment">% t-score accounts for degrees of freedom</span>
     <span class="keyword">for</span> r = 1:REP
         sample = randn(N, 1);
         mu = mean(sample); <span class="comment">% sample mean</span>
@@ -116,21 +118,25 @@ count = zeros(1, 50);
 <span class="keyword">end</span>
 
 plot(count(2:end), <span class="string">'LineWidth'</span>, 2); hold <span class="string">on</span>;
-legend(<span class="string">'z'</span>, <span class="string">'t'</span>)
+legend(<span class="string">'z-test'</span>, <span class="string">'t-test'</span>)
 x=get(gca,<span class="string">'xlim'</span>);
 line(x, [0.95 0.95], <span class="string">'Color'</span>, <span class="string">'black'</span>, <span class="string">'LineWidth'</span>, 0.05, <span class="string">'HandleVisibility'</span>, <span class="string">'off'</span>); hold <span class="string">on</span>;
 ylim([0.75 1]);
+xlabel(<span class="string">'Number of samples $N$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>)
+ylabel({<span class="string">'Percentage of draws that contain the true mean'</span>,<span class="string">'in the 95\% confidence interval'</span>}, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>)
 title(<span class="string">'the flaw in the z-test'</span>)
 </pre><img vspace="5" hspace="5" src="zflaw_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 % assume population distribution is standard normal.
-% repeatedly draw samples (a 1000 times) of size N = 2:50
+% repeatedly draw samples (REP times) of size N = 2:50
 
 clear; close all;
 
-REP = 10000; % number of repeatition
+REP = 10000; % number of repititions
 
 figure;
+
+% N: Number of samples
 
 % z-confidence interval
 count = zeros(1, 50);
@@ -156,7 +162,7 @@ plot(count(2:end), 'LineWidth', 2); hold on;
 % t-confidence interval
 count = zeros(1, 50);
 for N = 2:50
-    t = tinv(0.975, N-1); % t-score account for degrees of freedom
+    t = tinv(0.975, N-1); % t-score accounts for degrees of freedom
     for r = 1:REP
         sample = randn(N, 1);
         mu = mean(sample); % sample mean
@@ -173,10 +179,12 @@ for N = 2:50
 end
 
 plot(count(2:end), 'LineWidth', 2); hold on;
-legend('z', 't')
+legend('z-test', 't-test')
 x=get(gca,'xlim');
 line(x, [0.95 0.95], 'Color', 'black', 'LineWidth', 0.05, 'HandleVisibility', 'off'); hold on;
 ylim([0.75 1]);
+xlabel('Number of samples $N$', 'Interpreter', 'latex')
+ylabel({'Percentage of draws that contain the true mean','in the 95\% confidence interval'}, 'Interpreter', 'latex')
 title('the flaw in the z-test')
 
 ##### SOURCE END #####

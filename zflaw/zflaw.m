@@ -1,11 +1,13 @@
 % assume population distribution is standard normal.
-% repeatedly draw samples (a 1000 times) of size N = 2:50
+% repeatedly draw samples (REP times) of size N = 2:50
 
 clear; close all;
 
 REP = 10000; % number of repititions
 
 figure;
+
+% N: Number of samples
 
 % z-confidence interval
 count = zeros(1, 50);
@@ -48,7 +50,7 @@ for N = 2:50
 end
 
 plot(count(2:end), 'LineWidth', 2); hold on;
-legend('z', 't')
+legend('z-test', 't-test')
 x=get(gca,'xlim');
 line(x, [0.95 0.95], 'Color', 'black', 'LineWidth', 0.05, 'HandleVisibility', 'off'); hold on;
 ylim([0.75 1]);
